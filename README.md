@@ -1,2 +1,2 @@
-# interviewbit
-A few solved interviewbit questions
+# interviewbit/leetcode
+A few solved interviewbit/leetcode questions
