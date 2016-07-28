@@ -1,0 +1,20 @@
+/*
+Clone an undirected graph. Each node in the graph contains a label and a list of its neighbors.
+
+Nodes are labeled uniquely.
+*/
+UndirectedGraphNode *CloneGraph(UndirectedGraphNode *node,unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> &HashMap){
+    if(node==NULL) return NULL;
+    if(HashMap.count(node)) return HashMap[node];
+    UndirectedGraphNode *newnode= new UndirectedGraphNode(node->label);
+    newnode->neighbors.resize(node->neighbors.size());
+    HashMap[node]=newnode;
+    for(int i=0;i<node->neighbors.size();i++){
+        newnode->neighbors[i]=CloneGraph(node->neighbors[i],HashMap);
+    }
+    return newnode;
+}
+UndirectedGraphNode *Solution::cloneGraph(UndirectedGraphNode *node) {
+    unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> HashMap;
+    return CloneGraph(node,HashMap);
+}
