@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxkaro(int a, int b){
+        if(a>b) return a;
+        return b;
+    }
+    int jump(vector<int>& nums) {
+        int max=0;
+        int next=0;
+        int cnt=0;
+        //if(nums.size()<=1) return 0;
+        for(int i=0,l=nums.size();i<l-1&&next<l-1;i++){
+            max=maxkaro(max,nums[i]+i);
+            if(i==next) {
+                //if(max==next) return -1;
+                next=max;
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+};
