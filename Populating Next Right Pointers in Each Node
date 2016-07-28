@@ -1,0 +1,68 @@
+/*
+Given a binary tree
+
+    struct TreeLinkNode {
+      TreeLinkNode *left;
+      TreeLinkNode *right;
+      TreeLinkNode *next;
+    }
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+
+Initially, all next pointers are set to NULL.
+
+Note:
+
+You may only use constant extra space.
+You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children).
+For example,
+Given the following perfect binary tree,
+         1
+       /  \
+      2    3
+     / \  / \
+    4  5  6  7
+After calling your function, the tree should look like:
+         1 -> NULL
+       /  \
+      2 -> 3 -> NULL
+     / \  / \
+    4->5->6->7 -> NULL
+*/
+
+/**
+ * Definition for binary tree with next pointer.
+ * struct TreeLinkNode {
+ *  int val;
+ *  TreeLinkNode *left, *right, *next;
+ *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void connect(TreeLinkNode *root) {
+        if(!root) return;
+        queue<pair<TreeLinkNode *,int>> que;
+        pair<TreeLinkNode *,int> temp;
+        que.push(make_pair(root,0));
+        //int level=0;
+        while(!que.empty()){
+            temp=que.front();
+            que.pop();
+            
+            if(!que.empty()&&que.front().second==temp.second){
+                temp.first->next=que.front().first;
+            }
+            
+            if(temp.second!=que.front().second){
+                temp.first->next=NULL;
+            }
+            if(temp.first->left){
+                que.push(make_pair(temp.first->left,temp.second+1));
+            }
+            if(temp.first->right){
+                que.push(make_pair(temp.first->right,temp.second+1));
+            }
+        }
+        temp.first->next=NULL;
+    }
+};
