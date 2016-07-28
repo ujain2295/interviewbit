@@ -10,14 +10,28 @@ here 2 + 2 = 4
 so minimum numbers will be 2
 */
 
-int Solution::fibsum(int A) {
-    vector<int> dp;
-    dp.push_back(0);
-    dp.push_back(1);
-    for(;dp[dp.size()-1]<=A;){
-        dp.push_back(dp[dp.size()-1]+dp[dp.size()-2]);
+class Solution
+{
+    public:
+
+    int fibsum(int N)
+    {
+        vector<int> Fib;
+        Fib.push_back(1);
+        Fib.push_back(1);
+        for(int i = 2; Fib[i - 1] < N; ++i) {
+            int data = Fib[i - 1] + Fib[i - 2];
+            Fib.push_back(data);
+        }
+        
+        int ans = 0;
+        int index = Fib.size() - 1;
+        while (N > 0) {
+            // find the largest fibonacci less than N.
+            while (Fib[index] > N) index--;
+            N -= Fib[index];
+            ans++;
+        }
+        return ans;
     }
-    return dp[dp.size()-1];
-    if(A==dp[dp.size()-1]) return 1;
-    else return 1+fibsum(A-dp[dp.size()-1]);
-}
+};
