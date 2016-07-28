@@ -1,0 +1,129 @@
+/*
+Given a 2D board containing 'X' and 'O', capture all regions surrounded by 'X'.
+
+A region is captured by flipping all 'O's into 'X's in that surrounded region.
+
+For example,
+
+X X X X
+X O O X
+X X O X
+X O X X
+After running your function, the board should be:
+
+X X X X
+X X X X
+X X X X
+X O X X
+*/
+
+/*void Solution::solve(vector<vector<char> > &A) {
+    int rows=A.size();
+    if (rows==0) return;
+    int columns=A[0].size();
+    queue<pair<int,int>>que;
+    for(int i=0;i<columns;i++){
+        if(A[0][i]=='O')
+            que.push(make_pair(0,i));
+        if(A[rows-1][i]=='O')
+            que.push(make_pair(rows-1,i));
+    }
+    for(int i=0;i<rows;i++){
+        if(A[i][0]=='O')
+            que.push(make_pair(i,0));
+        if(A[i][columns-1]=='O')
+            que.push(make_pair(i,columns-1));
+    }
+    while(!que.empty()){
+        pair<int,int> foo=que.front();
+        que.pop();
+        if(A[foo.first][foo.second]=='X'||foo.first>=rows||foo.first<0||foo.second>=columns||foo.second<0) continue;
+        else{
+            A[foo.first][foo.second]='N';
+            que.push(make_pair(foo.first,foo.second+1));
+            que.push(make_pair(foo.first,foo.second-1));
+            que.push(make_pair(foo.first+1,foo.second));
+            que.push(make_pair(foo.first-1,foo.second));
+        }
+    }
+    for(int i=0;i<rows;i++){
+        for(int j=0;j<columns;j++){
+            if(A[i][j]=='N')
+                A[i][j]='O';
+            else if(A[i][j]=='O'){
+                A[i][j]='X';
+            }
+        }
+    }
+    return;
+}*/
+void Solution::solve(vector<vector<char> > &board) {
+    int row = board.size();  //get row number
+        if (row==0){return;}
+        int col = board[0].size(); // get column number
+         
+        vector<vector<bool> > bb(row, vector<bool>(col)); //result vector
+         
+        queue<pair<int,int> > q; // queue for BFS
+         
+        //search "O" from 1st row
+        for (int i=0;i<col;i++){
+            if (board[0][i]=='O'){
+                q.push(make_pair(0,i));
+                bb[0][i]=true;
+            }
+        }
+         
+        //search "O" from 1st column
+        for (int i=0;i<row;i++){
+            if (board[i][0]=='O'){
+                q.push(make_pair(i,0));
+                bb[i][0]=true;
+            }
+        }
+         
+        //search "O" from last row
+        for (int i=0;i<col;i++){
+            if (board[row-1][i]=='O'){
+                q.push(make_pair(row-1,i));
+                bb[row-1][i]=true;
+            }
+        }
+         
+        //search "O" from last column
+        for (int i=0;i<row;i++){
+            if (board[i][col-1]=='O'){
+                q.push(make_pair(i,col-1));
+                bb[i][col-1]=true;
+            }
+        }
+         
+        //BFS
+        int i,j; // current position
+        while (!q.empty()){
+            //get current live "O"
+            i = q.front().first;
+            j = q.front().second;
+             
+            //pop up queue
+            q.pop(); 
+             
+            //search four directions
+            if (i-1>0 && board[i-1][j]=='O' && bb[i-1][j]==false){bb[i-1][j]=true; q.push(make_pair(i-1,j));} //top
+            if (i+1<row-1 && board[i+1][j]=='O'&& bb[i+1][j]==false){bb[i+1][j]=true; q.push(make_pair(i+1,j));} // bottom
+            if (j-1>0 && board[i][j-1]=='O'&& bb[i][j-1]==false){bb[i][j-1]=true; q.push(make_pair(i,j-1));} // left
+            if (j+1<col-1 && board[i][j+1]=='O'&& bb[i][j+1]==false){bb[i][j+1]=true; q.push(make_pair(i,j+1));} // right
+        }
+         
+        //Get result
+        for (int i=0;i<row;i++){
+            for (int j=0;j<col;j++){
+                if (board[i][j]=='O'&&bb[i][j]==false){
+                    board[i][j]='X';
+                }
+            }
+        }
+         
+        return;
+            
+    }
