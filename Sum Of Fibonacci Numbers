@@ -1,0 +1,23 @@
+/*
+How many minimum numbers from fibonacci series are required such that sum of numbers should be equal to a given Number N?
+Note : repetition of number is allowed.
+
+Example:
+
+N = 4
+Fibonacci numbers : 1 1 2 3 5 .... so on
+here 2 + 2 = 4 
+so minimum numbers will be 2
+*/
+
+int Solution::fibsum(int A) {
+    vector<int> dp;
+    dp.push_back(0);
+    dp.push_back(1);
+    for(;dp[dp.size()-1]<=A;){
+        dp.push_back(dp[dp.size()-1]+dp[dp.size()-2]);
+    }
+    return dp[dp.size()-1];
+    if(A==dp[dp.size()-1]) return 1;
+    else return 1+fibsum(A-dp[dp.size()-1]);
+}
