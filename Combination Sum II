@@ -16,18 +16,32 @@ A solution set is:
 ]
 */
 
-Given a collection of candidate numbers (C) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.
-
-Each number in C may only be used once in the combination.
-
-Note:
-All numbers (including target) will be positive integers.
-The solution set must not contain duplicate combinations.
-For example, given candidate set [10, 1, 2, 7, 6, 1, 5] and target 8, 
-A solution set is: 
-[
-  [1, 7],
-  [1, 2, 5],
-  [2, 6],
-  [1, 1, 6]
-]
+class Solution {
+public:
+    void func(int target,vector<int> res,set<vector<int>> &result,vector<int> &candidates,int i){
+        
+        if(target==0){
+            result.insert(res);
+            return;
+        }
+        
+        if(target<0) return;
+        
+        for(int l=candidates.size();i<l;i++){
+            if(target<candidates[i]) break;
+            res.push_back(candidates[i]);
+            func(target-candidates[i],res,result,candidates,i+1);
+            res.pop_back();
+        }
+        
+    }
+    
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        set<vector<int>> result;
+        int L=candidates.size();
+        sort(candidates.begin(),candidates.end());
+        vector<int> res;
+        func(target,res,result,candidates,0);
+        return vector<vector<int>> (result.begin(),result.end());
+    }
+};
