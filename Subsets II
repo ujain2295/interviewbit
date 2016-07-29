@@ -1,0 +1,40 @@
+/*
+Given a collection of integers that might contain duplicates, nums, return all possible subsets.
+
+Note: The solution set must not contain duplicate subsets.
+
+For example,
+If nums = [1,2,2], a solution is:
+
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+*/
+
+class Solution {
+public:
+    void func(vector<int>& nums,set<vector<int>> &res,vector<int> &vec,int start){
+        if(start==nums.size()){
+            res.insert(vec);
+            return;
+        }
+        for(int i=start;i<nums.size();i++){
+            res.insert(vec);
+            vec.push_back(nums[i]);
+            func(nums,res,vec,i+1);
+            vec.pop_back();
+        }
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        set<vector<int>> res;
+        vector<int> vec;
+        sort(nums.begin(),nums.end());
+        func(nums,res,vec,0);
+        return vector<vector<int>> (res.begin(),res.end());
+    }
+};
