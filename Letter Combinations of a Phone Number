@@ -1,0 +1,49 @@
+/*
+Given a digit string, return all possible letter combinations that the number could represent.
+
+A mapping of digit to letters (just like on the telephone buttons) is given below.
+
+
+
+Input:Digit string "23"
+Output: ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"].
+*/
+
+class Solution {
+public:
+    string charmap[10];
+
+    Solution() {
+        charmap[0] = "0";
+        charmap[1] = "1";
+        charmap[2] = "abc";
+        charmap[3] = "def";
+        charmap[4] = "ghi";
+        charmap[5] = "jkl";
+        charmap[6] = "mno";
+        charmap[7] = "pqrs";
+        charmap[8] = "tuv";
+        charmap[9] = "wxyz";
+    }
+
+    void generateHelper(string &current, int index, string &digits, vector<string> &ans) {
+        if (index == digits.length()) {
+            ans.push_back(current);
+            return;
+        }
+        int digit = digits[index] - '0';
+        for (int i = 0; i < charmap[digit].length(); i++) {
+            current.push_back(charmap[digit][i]);
+            generateHelper(current, index + 1, digits, ans);
+            current.pop_back();
+        }
+        return;
+    }
+
+    vector<string> letterCombinations(string digits) {
+        vector<string> ans;
+        string current = "";
+        generateHelper(current, 0, digits, ans);
+        return ans;
+    }
+};
