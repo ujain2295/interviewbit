@@ -1,0 +1,44 @@
+/*
+The set [1,2,3,…,n] contains a total of n! unique permutations.
+
+By listing and labeling all of the permutations in order,
+We get the following sequence (ie, for n = 3):
+
+"123"
+"132"
+"213"
+"231"
+"312"
+"321"
+Given n and k, return the kth permutation sequence.
+
+Note: Given n will be between 1 and 9 inclusive.
+*/
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        // Start typing your C/C++ solution below
+        // DO NOT write int main() function
+        if(n<0||k<=0)
+            return "";
+        vector<int> num(n);
+        int perMutationNum = 1;
+        for(int i = 0; i <n;++i) //push all numbers into num vector
+        {
+            num[i] = i+1;
+            perMutationNum = perMutationNum*(i+1);
+        }
+        --k; //begin from zero in the vector
+        string res;
+        for(int i = 0; i < n; ++i)
+        {
+            perMutationNum = perMutationNum/(n-i);
+            int choosed = k/perMutationNum;
+            res.push_back(num[choosed]+'0');
+            for(int j = choosed; j < n-i;++j)//delete the deleted one
+                num[j] = num[j+1];
+            k = k%perMutationNum;
+        }
+        return res;
+    }
+};
