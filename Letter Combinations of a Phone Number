@@ -42,6 +42,7 @@ public:
 
     vector<string> letterCombinations(string digits) {
         vector<string> ans;
+        if(digits.size()==0) return ans;
         string current = "";
         generateHelper(current, 0, digits, ans);
         return ans;
