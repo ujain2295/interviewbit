@@ -22,22 +22,14 @@ int max(int a,int b){
     if(a<b) return b;
     else return a;
 }
+
 int Solution::maxProfit(const vector<int> &prices) {
-    int len=prices.size();
-    if(len==0) return 0;
-    vector<int> profitHist(len);
-    for (int buyDay=0, today=1; today<len; ++today) {  
-     int curP = prices[today] - prices[buyDay];  
-     if (curP <= 0) buyDay = today;  
-     else profitHist[today] = max(curP, profitHist[today-1]);  
-   }  
-   // backward calculate profit  
-   int profit=profitHist[len-1], backProfit=0;  
-   for (int today=len-2, sellDay=len-1; today>0; --today) {  
-     int curP = prices[sellDay] - prices[today];  
-     if (curP <= 0) sellDay = today;  
-     else backProfit = max(curP, backProfit);  
-     profit = max(profit, profitHist[today]+backProfit);  
-   }  
-   return profit;  
+    int hold1=INT_MIN, hold2=INT_MIN, release1=0, release2=0;
+    for(int i:prices){
+        release2=max(release2, hold2+i);
+        hold2=max(hold2,release1-i);
+        release1=max(release1, hold1+i);
+        hold1=max(hold1, -i);
+    }
+    return release2;
 }
