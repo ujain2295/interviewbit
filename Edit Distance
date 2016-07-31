@@ -1,0 +1,32 @@
+/*
+Given two words word1 and word2, find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)
+
+You have the following 3 operations permitted on a word:
+
+a) Insert a character
+b) Delete a character
+c) Replace a character
+*/
+
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        
+        int l1=word1.size(),l2=word2.size();
+        vector<vector<int>> X(l1+1,vector<int>(l2+1,INT_MAX));
+        
+        for(int i=0;i<=l1;i++) X[i][0]=i;
+        for(int j=0;j<=l2;j++) X[0][j]=j;
+        
+        for(int i=0;i<l1;i++){
+            for(int j=0;j<l2;j++){
+                int m=min(X[i+1][j],X[i][j+1])+1;
+                if(word1[i]==word2[j]) m=min(m,X[i][j]);
+                else m=min(m,X[i][j]+1);
+                X[i+1][j+1]=m;
+            }
+        }
+        
+        return X[l1][l2];
+    }
+};
