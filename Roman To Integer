@@ -1,0 +1,34 @@
+/*
+Given a roman numeral, convert it to an integer.
+
+Input is guaranteed to be within the range from 1 to 3999.
+
+Read more details about roman numerals at Roman Numeric System
+
+Example :
+
+Input : "XIV"
+Return : 14
+Input : "XX"
+Output : 20
+*/
+
+int lettertoint(char x){
+    if(x=='I') return 1;
+    if(x=='V') return 5;
+    if(x=='X') return 10;
+    if(x=='L') return 50;
+    if(x=='C') return 100;
+    if(x=='D') return 500;
+    if(x=='M') return 1000;
+}
+int Solution::romanToInt(string A) {
+    int i,l=A.size();
+    int number=lettertoint(A[l-1]);
+    for(i=l-2;i>=0;i--){
+        if(lettertoint(A[i+1])>lettertoint(A[i])) 
+            number-=lettertoint(A[i]);
+        else number+=lettertoint(A[i]);
+    }
+    return number;
+}
