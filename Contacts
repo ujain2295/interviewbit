@@ -1,0 +1,118 @@
+/*
+We're going to make our own Contacts application! The application must perform two types of operations:
+
+add name, where  is a string denoting a contact name. This must store  as a new contact in the application.
+find partial, where  is a string denoting a partial name to search the application for. It must count the number of contacts starting with  and print the count on a new line.
+Given  sequential add and find operations, perform each operation in order.
+
+Input Format
+
+The first line contains a single integer, , denoting the number of operations to perform. 
+Each line  of the  subsequent lines contains an operation in one of the two forms defined above.
+
+Constraints
+
+It is guaranteed that  and  contain lowercase English letters only.
+Output Format
+
+For each find partial operation, print the number of contact names starting with  on a new line.
+
+Sample Input
+
+4
+add hack
+add hackerrank
+find hac
+find hak
+Sample Output
+
+2
+0
+Explanation
+
+We perform the following sequence of operations:
+
+Add a contact named hack.
+Add a contact named hackerrank.
+Find and print the number of contact names beginning with hac. There are currently two contact names in the application and both of them start with hac, so we print  on a new line.
+Find and print the number of contact names beginning with hak. There are currently two contact names in the application but neither of them start with hak, so we print  on a new line.
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+Implement a trie with insert, search, and startsWith methods.
+
+Note:
+You may assume that all inputs are consist of lowercase letters a-z.
+*/
+
+class TrieNode {
+public:
+    // Initialize your data structure here.
+    TrieNode():isWord(false),cnt(0) { } 
+    unordered_map<char,TrieNode*> children;
+    bool isWord;
+    int cnt;
+};
+
+class Trie {
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    void insert(string word) {
+        if(word.size()<=0) return;
+        TrieNode *node=root;
+        for(int i=0;i<word.size();i++){
+            if(node->children.find(word[i])==node->children.end())
+                node->children[word[i]]=new TrieNode();
+            node->cnt= node->cnt + 1;
+            node=node->children[word[i]];
+        }
+        node->isWord=true;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    int startsWith(string prefix) {
+        if(prefix.size()<=0) return false;
+        TrieNode *node=root;
+        for(int i=0;i<prefix.size();i++){
+            if(node->children.find(prefix[i])==node->children.end())
+                return 0;
+            node=node->children[prefix[i]];
+        }
+        return node->cnt;
+    }
+
+private:
+    TrieNode* root;
+};
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie;
+// trie.insert("somestring");
+// trie.search("key");
+
+
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    Trie trie;
+    int t;
+    cin>>t;
+    while(t--){
+        string dothis,name;
+        cin>>dothis>>name;
+        if(dothis=="add"){
+            trie.insert(name);
+        }
+        else if(dothis=="find"){
+            cout<<trie.startsWith(name)<<endl;
+        }
+    }
+    return 0;
+}
