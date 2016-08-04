@@ -41,6 +41,21 @@ class Solution {
 public:
     void connect(TreeLinkNode *root) {
         if(!root) return;
+        TreeLinkNode *prev=root,*curr;
+        while(prev->left){
+            curr=prev;
+            while(curr){
+                curr->left->next=curr->right;
+                if(curr->next)
+                    curr->right->next=curr->next->left;
+                curr=curr->next;
+            }
+            prev=prev->left;
+        }
+    }
+    /*
+    void connect(TreeLinkNode *root) {
+        if(!root) return;
         queue<pair<TreeLinkNode *,int>> que;
         pair<TreeLinkNode *,int> temp;
         que.push(make_pair(root,0));
@@ -65,4 +80,5 @@ public:
         }
         temp.first->next=NULL;
     }
+    */
 };
