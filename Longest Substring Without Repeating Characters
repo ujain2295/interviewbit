@@ -20,7 +20,6 @@ public:
                 X[s[end]]=true;
             }
             else{
-                X[s[end]]=true;
                 while(start<=end && X[s[end]]==true){
                     X[s[start]]=false;
                     start++;
