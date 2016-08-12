@@ -1,0 +1,26 @@
+/*
+Implement int sqrt(int x).
+
+Compute and return the square root of x.
+*/
+
+class Solution {
+public:
+    int mySqrt(int num) {
+        if(num==0) return 0;
+        if(num==1) return 1;
+        long int start=1,end=num/2,mid,temp;
+        while(start<=end){
+            mid=(start+end)/2;
+            temp=mid*mid;
+            if(temp==num) return mid;
+            else if(temp<num){
+                start=mid+1;
+            }
+            else{
+                end=mid-1;
+            }
+        }
+        return start-1;
+    }
+};
