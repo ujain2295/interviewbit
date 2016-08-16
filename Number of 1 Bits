@@ -9,6 +9,19 @@ The 32-bit integer 11 has binary representation
 so the function should return 3.
 */
 
+class Solution
+{
+public:
+	int hammingWeight(uint32_t n) {
+		int count = 0;
+		while (n) {
+			n &= (n - 1);
+			count++;
+		}
+		return count;
+	}
+};
+
 int Solution::numSetBits(unsigned int A) {
     unsigned int count = 0;
     while(A)
