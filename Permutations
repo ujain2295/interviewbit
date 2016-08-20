@@ -13,6 +13,28 @@ For example,
 ]
 */
 
+class SolutionLeetCode {
+public:
+    void perm(vector<int> &num,int k, vector<vector<int> > &res){
+        if(k>=num.size()){
+            res.push_back(num);
+            return;
+        }
+        for(int i=k;i<num.size();i++){
+            swap(num[k],num[i]);
+            perm(num,k+1,res);
+            swap(num[k],num[i]);
+        }
+    }
+
+    vector<vector<int> > permute(vector<int> &num) {
+        vector<vector<int>> res;
+        perm(num,0,res);
+        return res;
+    }
+};
+
+
 class Solution {
 public:
     void perm(vector<int> num,int k,int n, vector<vector<int> > &res){
