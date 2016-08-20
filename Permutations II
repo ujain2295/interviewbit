@@ -10,7 +10,29 @@ For example,
 ]
 */
 
-/*
+class SolutionLeetCode {
+public:
+    void perm(vector<int> num,int k, vector<vector<int> > &res){
+        if(k>=num.size()){
+            res.push_back(num);
+            return;
+        }
+        for(int i=k;i<num.size();i++){
+            if(i!=k && num[i]==num[k]) continue;
+            swap(num[k],num[i]);
+            perm(num,k+1,res);
+            //swap(num[k],num[i]);
+        }
+    }
+
+    vector<vector<int> > permuteUnique(vector<int> &num) {
+        sort(num.begin(),num.end());
+        vector<vector<int>> res;
+        perm(num,0,res);
+        return res;
+    }
+};
+
 class Solution {
 public:
     vector<vector<int>> permuteUnique(vector<int>& num) {
@@ -36,7 +58,6 @@ public:
         }
     }
 };
-*/
 
 class Solution {
 public:
