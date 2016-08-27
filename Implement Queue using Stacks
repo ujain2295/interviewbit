@@ -1,3 +1,6 @@
+# Time:  O(1), amortized
+# Space: O(n)
+
 /*
 Implement the following operations of a queue using stacks.
 
@@ -33,3 +36,44 @@ public:
 		return input.empty() && output.empty();
 	}
 };
+
+class Queue(object):
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.st1 = []
+        self.st2 = []
+         
+ 
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: nothing
+        """
+        self.st1.append(x)
+         
+ 
+    def pop(self):
+        """
+        :rtype: nothing
+        """
+        self.peek()
+        self.st2.pop()
+                 
+ 
+    def peek(self):
+        """
+        :rtype: int
+        """   
+        if len(self.st2) == 0:
+            while len(self.st1) != 0:
+                self.st2.append(self.st1.pop())
+        return self.st2[-1]
+         
+ 
+    def empty(self):
+        """
+        :rtype: bool
+        """
+        return not self.st1 and not self.st2
