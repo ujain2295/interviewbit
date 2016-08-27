@@ -1,3 +1,6 @@
+# Time:  O(n)
+# Space: O(1)
+
 /*
 Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
 
@@ -49,3 +52,38 @@ public:
 		return preheader->next;
 	}
 };
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseKGroup(self, head, k):
+        """
+        :type head: ListNode
+        :type k: int
+        :rtype: ListNode
+        """
+        if head==None or k==1:
+            return head
+        len=0
+        preheader=ListNode(-1)
+        preheader.next=head
+        cur, pre = preheader, preheader
+        while cur.next!=None:
+            cur=cur.next
+            len=len+1
+        while len>=k:
+            cur=pre.next
+            nex=cur.next
+            for _ in xrange(k-1):
+                temp=nex.next
+                nex.next=pre.next
+                pre.next=nex
+                cur.next=temp
+                nex=temp
+            pre=cur
+            len-=k
+        return preheader.next
