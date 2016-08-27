@@ -1,25 +1,89 @@
+# Time:  O(log(min(m, n)))
+# Space: O(1)
+
 /*
 There are two sorted arrays nums1 and nums2 of size m and n respectively.
 
 Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+
+Example 1:
+nums1 = [1, 3]
+nums2 = [2]
+
+The median is 2.0
+Example 2:
+nums1 = [1, 2]
+nums2 = [3, 4]
+
+The median is (2 + 3)/2 = 2.5
 */
 
-int min(int a, int b){
-    if(a<b) return a;
-    return b;
-}
-double fms(int A[],int m,int B[],int n, int k){
-    if(m>n) return fms(B,n,A,m,k);
-    if(m==0) return B[k-1];
-    if(k==1) return min(A[0],B[0]);
-    int pa= min(k/2,m);
-    int pb= k-pa;
-    if(A[pa-1]<=B[pb-1]) return fms(A+pa,m-pa,B,n,k-pa);
-    return fms(A,m,B+pb,n-pb,k-pb);
-}
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        if ((nums1.size() + nums2.size()) % 2 == 1) {
+            return findKthInTwoSortedArrays(nums1, nums2, (nums1.size() + nums2.size()) / 2 + 1);
+        } else {
+            return (findKthInTwoSortedArrays(nums1, nums2, (nums1.size() + nums2.size()) / 2) +
+                    findKthInTwoSortedArrays(nums1, nums2, (nums1.size() + nums2.size()) / 2 + 1)) / 2.0;
+        }
+    }
 
-double findMedianSortedArrays(int* A, int m, int* B, int n) {
-    int total=m+n;
-    if(total%2==1) return fms(A,m,B,n,total/2 + 1);
-    else return (fms(A,m,B,n,total/2) + fms(A,m,B,n,total/2 + 1))/2;
-}
+    int findKthInTwoSortedArrays(const vector<int>& A, const vector<int>& B,
+                                 int k) {
+        const int m = A.size();
+        const int n = B.size();
+        
+        if (m > n) {
+            return findKthInTwoSortedArrays(B, A, k);
+        }
+
+        int left = 0;
+        int right = m;
+       
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (0 <= k - 1 - mid && k - 1 - mid < n && A[mid] >= B[k - 1 - mid]) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        int Ai_minus_1 = left - 1 >= 0 ? A[left - 1] : INT_MIN;
+        int Bj = k - 1 - left >= 0 ? B[k - 1 - left] : INT_MIN;
+
+        return max(Ai_minus_1, Bj);
+    }
+};
+
+class Solution(object):
+    def findMedianSortedArrays(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: float
+        """
+        len1, len2 = len(nums1), len(nums2)
+        if (len1 + len2) % 2 == 1: 
+            return self.getKth(nums1, nums2, (len1 + len2)/2 + 1)
+        else:
+            return (self.getKth(nums1, nums2, (len1 + len2)/2) + self.getKth(nums1, nums2, (len1 + len2)/2 + 1)) * 0.5
+
+    def getKth(self, A, B, k):
+        m, n = len(A), len(B)
+        if m > n:
+            return self.getKth(B, A, k)
+
+        left, right = 0, m    
+        while left < right:
+            mid = left + (right - left) / 2
+            if 0 <= k - 1 - mid < n and A[mid] >= B[k - 1 - mid]:
+                right = mid
+            else:
+                left = mid + 1
+
+        Ai_minus_1 = A[left - 1] if left - 1 >= 0 else float("-inf")
+        Bj = B[k - 1 - left] if k - 1 - left >= 0 else float("-inf")
+
+        return max(Ai_minus_1, Bj)
