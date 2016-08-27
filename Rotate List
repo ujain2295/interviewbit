@@ -1,0 +1,72 @@
+# Time:  O(n)
+# Space: O(1)
+
+/*
+Given a list, rotate the list to the right by k places, where k is non-negative.
+
+For example:
+Given 1->2->3->4->5->NULL and k = 2,
+return 4->5->1->2->3->NULL.
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int lth(ListNode *A){
+        if(A==NULL) return 0;
+        return lth(A->next)+1;
+    }
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head==NULL) return NULL;
+        int l=lth(head);
+        k=k%l;
+        if(k==0||head->next==NULL) return head;
+        ListNode *p=head;
+        for(int i=0;i<l-k-1;i++)
+            p=p->next;
+        ListNode *q=p->next,*Q=q;
+        p->next=NULL;
+        while(q->next){
+            q=q->next;
+        }
+        q->next=head;
+        return Q;
+    }
+};
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def rotateRight(self, head, k):
+        """
+        :type head: ListNode
+        :type k: int
+        :rtype: ListNode
+        """
+        if not head or not head.next:
+            return head
+
+        n, cur = 1, head
+        while cur.next:
+            cur = cur.next
+            n += 1
+        cur.next = head
+
+        cur, tail = head, cur
+        for _ in xrange((n - k) % n):
+            tail = cur
+            cur = cur.next
+        tail.next = None
+
+        return cur
